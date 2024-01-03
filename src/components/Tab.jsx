@@ -1,14 +1,28 @@
-const Tab = ({ children, activeTab }) => {
-  console.log("props", children);
+import { useEffect, useState } from "react";
+
+const Tab = ({ children, activeTab, setActiveTab }) => {
+  // console.log("props", children);
+
+  const [active, setActive] = useState(activeTab);
+
+  useEffect(() => {
+    setActive(activeTab);
+  }, [activeTab]);
 
   return (
     <div>
       <nav>
         {children.map((child, index) => (
-          <button className={activeTab === index ? "bg-blue-200": "bg-gray-300"} key={index}>{child.props.title} </button>
+          <button
+            onClick={() => setActiveTab(index)}
+            className={activeTab === index ? "bg-blue-200" : "bg-gray-300"}
+            key={index}
+          >
+            {child.props.title}
+          </button>
         ))}
       </nav>
-      {children}{" "}
+      {children[activeTab]}
     </div>
   );
 };
