@@ -1,14 +1,43 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 
 function App() {
-  const [todos, setTodos] = useState([]);
-  const [todo, setTodo] = useState();
+  const reducer = (state, action) => {
+    // console.log(state, action);
+    switch (action.type) {
+      case "SET_TODO":
+        return {
+          ...state,
+          todo: action.value,
+        };
+      case "ADD_TODO":
+        return {
+          ...state,
+          todo: "",
+          todos: [...state.todos, action.todo],
+        };
+    }
+  };
+
+  const [state, dispatch] = useReducer(reducer, {
+    todos: [],
+    todo: "",
+  });
 
   const submitHandle = (e) => {
     e.preventDefault();
-    setTodos([...todos, todo]);
-    setTodo("")
+    dispatch({
+      type: "ADD_TODO",
+      todo: state.todo,
+    });
+    // setTodos([...todos, todo]);
+    // setTodo("");
+  };
 
+  const onChange = (e) => {
+    dispatch({
+      type: "SET_TODO",
+      value: e.target.value,
+    });
   };
   return (
     <>
@@ -17,14 +46,15 @@ function App() {
         <input
           className="border bg-gray-100"
           type="text"
-          value={todo}
-          onChange={(e) => setTodo(e.target.value)}
+          value={state.todo}
+          onChange={onChange}
         />
-        <button type="submit"
-        disabled={!todo}>Ekle</button>
+        <button type="submit" disabled={!state.todo}>
+          Ekle
+        </button>
       </form>
       <ul>
-        {todos.map((todo, i) => (
+        {state.todos.map((todo, i) => (
           <li key={i}>{todo}</li>
         ))}
       </ul>
