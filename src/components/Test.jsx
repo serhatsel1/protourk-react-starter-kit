@@ -12,12 +12,25 @@ const Test = () => {
   }, []);
 
   useEffect(() => {
+    console.log("Count Değişti :", count);
+  }, [count]);
+
+  useEffect(() => {
     console.log("component render oldu");
   });
 
+  const [empty, setEmpty] = useState(false);
+
   return (
     <>
-      <button className="border flex" onClick={() => setCount((count) => count + 1)}>
+    
+      <button onClick={() => setEmpty((i) => !i)}>
+        --s{empty ? "boş" : ""}
+      </button>
+      <button
+        className="border flex"
+        onClick={() => setCount((count) => count + 1)}
+      >
         sayıcı : {count}
       </button>
       <div>selam</div>
